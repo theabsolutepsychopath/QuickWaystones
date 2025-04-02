@@ -5,14 +5,23 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
 public class CraftManager {
     public void registerRecipes() {
-        ShapedRecipe recipe = new ShapedRecipe(new NamespacedKey(QuickWaystones.getInstance(), "waypoint"), new ItemStack(Material.LODESTONE));
-        recipe.shape("SSS", "SES", "SSS");
-        recipe.setIngredient('S', Material.CHISELED_STONE_BRICKS);
-        recipe.setIngredient('E', Material.ENDER_PEARL);
+        ShapedRecipe recipeLodestone = new ShapedRecipe(new NamespacedKey(QuickWaystones.getInstance(), "waypoint"), new ItemStack(Material.LODESTONE));
+        recipeLodestone.shape("SSS", "SES", "SSS");
+        recipeLodestone.setIngredient('S', Material.CHISELED_STONE_BRICKS);
+        recipeLodestone.setIngredient('E', Material.REDSTONE_BLOCK);
 
-        QuickWaystones.getInstance().getServer().addRecipe(recipe);
+
+        ShapedRecipe recipeNametag = new ShapedRecipe(new NamespacedKey(QuickWaystones.getInstance(), "nametag"), new ItemStack(Material.NAME_TAG));
+        recipeNametag.shape("  S", " L ", "L  ");
+        recipeNametag.setIngredient('S', Material.STRING);
+        recipeNametag.setIngredient('L', Material.LEATHER);
+
+
+        QuickWaystones.getInstance().getServer().addRecipe(recipeLodestone);
+        QuickWaystones.getInstance().getServer().addRecipe(recipeNametag);
     }
 }

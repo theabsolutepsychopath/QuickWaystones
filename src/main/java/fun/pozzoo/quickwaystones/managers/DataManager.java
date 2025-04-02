@@ -2,6 +2,8 @@ package fun.pozzoo.quickwaystones.managers;
 
 import fun.pozzoo.quickwaystones.QuickWaystones;
 import fun.pozzoo.quickwaystones.data.WaystoneData;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -44,7 +46,15 @@ public class DataManager {
             config.load(file);
 
             for (String key : keys) {
-                WaystoneData waystoneData = new WaystoneData(key, config.getLocation("Waystones." + key + ".location"), config.getString("Waystones." + key + ".owner"));
+                Location location = new Location(
+                        Bukkit.getWorld(config.getString("Waystones." + key + ".location.world")),
+                        config.getDouble("Waystones." + key + ".location.x"),
+                        config.getDouble("Waystones." + key + ".location.y"),
+                        config.getDouble("Waystones." + key + ".location.z"),
+                        (float) config.getDouble("Waystones." + key + ".location.yaw"),
+                        (float) config.getDouble("Waystones." + key + ".location.pitch")
+                );
+                WaystoneData waystoneData = new WaystoneData(key, location, config.getString("Waystones." + key + ".owner"));
                 QuickWaystones.getWaystonesMap().put(waystoneData.getLocation(), waystoneData);
             }
         } catch (InvalidConfigurationException | IOException e) {
@@ -56,7 +66,13 @@ public class DataManager {
         configOverwrite = new YamlConfiguration();
 
         for (WaystoneData waystone : waystones) {
-            configOverwrite.set("Waystones." + waystone.getName() + ".location", waystone.getLocation());
+            Location location = waystone.getLocation();
+            configOverwrite.set("Waystones." + waystone.getName() + ".location.world", location.getWorld().getName());
+            configOverwrite.set("Waystones." + waystone.getName() + ".location.x", location.getX());
+            configOverwrite.set("Waystones." + waystone.getName() + ".location.y", location.getY());
+            configOverwrite.set("Waystones." + waystone.getName() + ".location.z", location.getZ());
+            configOverwrite.set("Waystones." + waystone.getName() + ".location.yaw", location.getYaw());
+            configOverwrite.set("Waystones." + waystone.getName() + ".location.pitch", location.getPitch());
             configOverwrite.set("Waystones." + waystone.getName() + ".owner", waystone.getOwner());
         }
 

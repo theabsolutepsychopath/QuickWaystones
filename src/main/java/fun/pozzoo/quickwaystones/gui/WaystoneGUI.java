@@ -28,7 +28,9 @@ public class WaystoneGUI {
         for (WaystoneData waystone : waystones.values()) {
             GuiItem item = ItemBuilder.from(Material.ENDER_PEARL).name(StringUtils.formatItemName(waystone.getName())).asGuiItem(inventoryClickEvent -> {
                 inventoryClickEvent.setCancelled(true);
-                player.teleport(waystone.getLocation().clone().add(0.5, 1, 0.5));
+                Location teleportLocation = waystone.getLocation().clone().add(0.5, 1, 0.5);
+                teleportLocation.setDirection(waystone.getFacingDirection());
+                player.teleport(teleportLocation);
                 player.getWorld().spawnParticle(Particle.PORTAL, player.getLocation(), 5);
                 player.playSound(player, Sound.ENTITY_FOX_TELEPORT, 0.5f, 1f);
                 player.closeInventory();

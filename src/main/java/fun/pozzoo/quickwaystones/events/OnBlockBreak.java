@@ -27,11 +27,19 @@ public class OnBlockBreak implements Listener {
         WaystoneData waystone = QuickWaystones.getWaystonesMap().get(event.getBlock().getLocation());
 
         if (player.isOp() || player.getName().equals(waystone.getOwner())) {
-            QuickWaystones.getWaystonesMap().remove(event.getBlock().getLocation());
-            return;
+            if (player.isSneaking()) {
+                player.sendMessage(StringUtils.formatString("<Red>" + "You have removed the waystone: " + waystone.getName()));
+                QuickWaystones.getWaystonesMap().remove(event.getBlock().getLocation());
+                return;
+            }
+            else {
+                event.setCancelled(true);
+                player.sendMessage(StringUtils.formatString("<Red>" + "Please sneak while breaking to confirm you want to remove this waystone!"));
+                return;
+            }
         }
 
         event.setCancelled(true);
-        player.sendMessage(StringUtils.formatString("<Red>" + this.plugin.getConfig().getString("Messages.WaystoneBrokenByOther")));
+        player.sendMessage(StringUtils.formatString("<Red>" + "You do not have permission to break this waystone!"));
     }
 }

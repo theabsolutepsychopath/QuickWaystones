@@ -16,14 +16,11 @@ public final class QuickWaystones extends JavaPlugin {
     private DataManager dataManager;
     private static Map<Location, WaystoneData> waystonesMap;
     private static int lastWaystoneID = 0;
-    private static Metrics metrics;
 
     @Override
     public void onEnable() {
         // Plugin startup logic
         plugin = this;
-
-        saveDefaultConfig();
 
         CraftManager craftManager = new CraftManager();
         craftManager.registerRecipes();
@@ -37,16 +34,12 @@ public final class QuickWaystones extends JavaPlugin {
         dataManager.loadWaystonesData();
 
         lastWaystoneID = waystonesMap.size();
-
-        metrics = new Metrics(plugin, 22064);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
         dataManager.saveWaystoneData(waystonesMap.values());
-
-        metrics.shutdown();
     }
 
     public static QuickWaystones getInstance() {
